@@ -1,21 +1,67 @@
 /* CSS RESET */
 
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-
+/*
+  2. Remove default margin
+*/
 * {
   margin: 0;
 }
-
+/*
+  3. Allow percentage-based heights in the application
+*/
 html,
 body {
   height: 100%;
 }
-
-
+/*
+  Typographic tweaks!
+  4. Add accessible line-height
+  5. Improve text rendering
+*/
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+/*
+  6. Improve media defaults
+*/
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+/*
+  7. Remove built-in form typography styles
+*/
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+/*
+  8. Avoid text overflows
+*/
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
 
 /* CSS File */
 
@@ -43,131 +89,202 @@ body {
   src: url(assets/fonts/HankenGrotesk-VariableFont_wght.ttf);
 }
 
+/* General Styling */
+
 body {
-  font-family: Hanken Grotest;
+  font-family: Hanken Grotest, sans-serif;
+  background-color: var(--color-pale-blue);
 }
 
-main {
-  width: 100vw;
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
+/* Utility classes */
+
+.flex-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Not visible on the page but accessible to screen-readers */
+.visually-hidden:not(:focus):not(:active) {
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 /* Result */
 
-.result-container {
+.result {
+  --content-padding: 1.5rem 3.5rem 1.875rem;
+  --content-spacing: 1rem;
+  display: grid;
+  background-color: var(--color-white);
+}
+
+.result__content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem 3.5rem 1.875rem;
-  background: linear-gradient(var(--color-light-slate-blue), var(--color-light-royal-blue));
+  gap: var(--content-spacing);
+  padding: var(--content-padding);
+  background: linear-gradient(
+    var(--color-light-slate-blue),
+    var(--color-light-royal-blue)
+  );
   border-radius: 0 0 1.5rem 1.5rem;
   color: var(--color-light-lavender);
 }
 
-.result-container > h1 {
+@media (min-width: 600px) {
+  body {
+    display: grid;
+    place-content: center;
+    margin: 1rem;
+  }
+
+  .result {
+    grid-template-columns: 1fr 1fr;
+    max-width: 600px;
+  }
+
+  .result__content {
+    border-radius: 1.5rem;
+  }
+
+  .summary {
+    border-radius: 0 1.5rem 1.5rem 0;
+  }
+}
+
+.result__title {
   font-size: var(--font-size-p);
   font-weight: var(--font-weight-medium);
 }
 
-.numbers-container {
+.result__score {
   width: 120px;
   height: 120px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(var(--color-persian-blue), var(--color-violet-blue));
+  background: linear-gradient(
+    var(--color-persian-blue),
+    var(--color-violet-blue)
+  );
   border-radius: 100%;
 }
 
-.numbers-container > .score {
+.result__score__content {
   font-size: 3rem;
   font-weight: var(--font-weight-extra-bold);
   color: var(--color-pale-blue);
 }
 
-.result-description {
+.result__description {
   text-align: center;
 }
 
-.remark {
+.result__description__remark {
   color: var(--color-pale-blue);
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
   font-weight: var(--font-weight-medium);
+  margin-bottom: 0.5rem;
 }
 
 /* Summary */
 
-.summary-container {
+.summary {
   display: flex;
   flex-direction: column;
-  padding: 1rem 0;
-  width: 80%;
-  margin: auto;
+  padding: 1.5rem;
 }
 
-.summary-container > h2 {
+.summary__title {
   font-size: var(--font-size-p);
   color: var(--color-dark-gray-blue);
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
-.summary-container > div {
-  margin: .5rem 0;
+.summary__category {
+  margin: 0.75rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 40px;
   padding: 0 1rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
+  font-weight: var(--font-weight-medium);
 }
 
-.reaction-container {
+.summary__category__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Icons next to category names */
+
+.summary__category__name[data-icon]::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+}
+
+.summary__category__name[data-icon="reaction"]::before {
+  background-image: url("assets/images/icon-reaction.svg");
+}
+.summary__category__name[data-icon="memory"]::before {
+  background-image: url("assets/images/icon-memory.svg");
+}
+.summary__category__name[data-icon="verbal"]::before {
+  background-image: url("assets/images/icon-verbal.svg");
+}
+.summary__category__name[data-icon="visual"]::before {
+  background-image: url("assets/images/icon-visual.svg");
+}
+
+.summary__category__reaction {
   background-color: hsla(0, 100%, 67%, 10%);
   color: hsl(0, 100%, 67%);
 }
 
-.memory-container {
+.summary__category__memory {
   background-color: hsla(39, 100%, 56%, 10%);
   color: hsl(39, 100%, 56%);
 }
 
-.verbal-container {
+.summary__category__verbal {
   background-color: hsla(166, 100%, 37%, 10%);
   color: hsl(166, 100%, 37%);
 }
 
-.visual-container {
+.summary__category__visual {
   background-color: hsla(234, 85%, 45%, 10%);
   color: hsl(234, 85%, 45%);
 }
 
-.summary-container > div > div {
-  display: flex;
-  align-items: center;
-  gap: .875rem;
-}
-
-.category {
-  font-weight: var(--font-weight-medium);
-}
-
-.score {
+.summary__category__score {
   color: var(--color-dark-gray-blue);
   font-weight: var(--font-weight-bold);
 }
 
-.total-score {
-  color: var(--color-light-lavender)
+.summary__category__total__score {
+  color: var(--color-light-lavender);
 }
 
-.btn {
-  border: none;
-  height: 2.5rem;
+/* Button */
+
+.button {
+  cursor: pointer;
+  text-decoration: none;
+  border: 0;
+  padding: 0.5em 1.5em;
+
   width: 70%;
   border-radius: 2rem;
   display: block;
@@ -176,3 +293,6 @@ main {
   color: var(--color-pale-blue);
 }
 
+.button:hover {
+  background-color: var(--color-light-royal-blue);
+}
